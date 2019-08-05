@@ -76,19 +76,13 @@ public class LocalStreamEnvironment extends StreamExecutionEnvironment {
 	}
 
 	/**
-	 * Executes the JobGraph of the on a mini cluster of CLusterUtil with a user
+	 * Executes the JobGraph of the on a mini cluster of ClusterUtil with a user
 	 * specified name.
 	 *
-	 * @param jobName
-	 *            name of the job
 	 * @return The result of the job execution, containing elapsed time and accumulators.
 	 */
 	@Override
-	public JobExecutionResult execute(String jobName) throws Exception {
-		// transform the streaming program into a JobGraph
-		StreamGraph streamGraph = getStreamGraph();
-		streamGraph.setJobName(jobName);
-
+	public JobExecutionResult execute(StreamGraph streamGraph) throws Exception {
 		JobGraph jobGraph = streamGraph.getJobGraph();
 		jobGraph.setAllowQueuedScheduling(true);
 
@@ -99,8 +93,8 @@ public class LocalStreamEnvironment extends StreamExecutionEnvironment {
 		// add (and override) the settings with what the user defined
 		configuration.addAll(this.configuration);
 
-		if (!configuration.contains(RestOptions.PORT)) {
-			configuration.setInteger(RestOptions.PORT, 0);
+		if (!configuration.contains(RestOptions.BIND_PORT)) {
+			configuration.setString(RestOptions.BIND_PORT, "0");
 		}
 
 		int numSlotsPerTaskManager = configuration.getInteger(TaskManagerOptions.NUM_TASK_SLOTS, jobGraph.getMaximumParallelism());
@@ -118,7 +112,7 @@ public class LocalStreamEnvironment extends StreamExecutionEnvironment {
 
 		try {
 			miniCluster.start();
-			configuration.setInteger(RestOptions.PORT, miniCluster.getRestAddress().getPort());
+			configuration.setInteger(RestOptions.PORT, miniCluster.getRestAddress().get().getPort());
 
 			return miniCluster.executeJobBlocking(jobGraph);
 		}

@@ -71,14 +71,14 @@ public class StreamNetworkPointToPointBenchmark {
 	 *
 	 * @param flushTimeout
 	 * 		output flushing interval of the
-	 * 		{@link org.apache.flink.streaming.runtime.io.StreamRecordWriter}'s output flusher thread
+	 * 		{@link org.apache.flink.runtime.io.network.api.writer.RecordWriter}'s output flusher thread
 	 */
 	public void setUp(long flushTimeout, Configuration config) throws Exception {
 		environment = new StreamNetworkBenchmarkEnvironment<>();
 		environment.setUp(1, 1, false, false, -1, -1, config);
 
-		receiver = environment.createReceiver();
 		recordWriter = environment.createRecordWriter(0, flushTimeout);
+		receiver = environment.createReceiver();
 	}
 
 	/**

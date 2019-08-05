@@ -34,7 +34,7 @@ This page describes how to declare built-in table sources and/or table sinks and
 Dependencies
 ------------
 
-The following table list all available connectors and formats. Their mutual compatibility is tagged in the corresponding sections for [table connectors](connect.html#table-connectors) and [table formats](connect.html#table-formats). The following table provides dependency information for both projects using a build automation tool (such as Maven or SBT) and SQL Client with SQL JAR bundles.
+The following tables list all available connectors and formats. Their mutual compatibility is tagged in the corresponding sections for [table connectors](connect.html#table-connectors) and [table formats](connect.html#table-formats). The following tables provide dependency information for both projects using a build automation tool (such as Maven or SBT) and SQL Client with SQL JAR bundles.
 
 {% if site.is_stable %}
 
@@ -43,24 +43,25 @@ The following table list all available connectors and formats. Their mutual comp
 | Name              | Version             | Maven dependency             | SQL Client JAR         |
 | :---------------- | :------------------ | :--------------------------- | :----------------------|
 | Filesystem        |                     | Built-in                     | Built-in               |
-| Elasticsearch     | 6                   | `flink-connector-elasticsearch6` | [Download](http://central.maven.org/maven2/org/apache/flink/flink-connector-elasticsearch6{{site.scala_version_suffix}}/{{site.version}}/flink-connector-elasticsearch6{{site.scala_version_suffix}}-{{site.version}}-sql-jar.jar) |
+| Elasticsearch     | 6                   | `flink-connector-elasticsearch6` | [Download](http://central.maven.org/maven2/org/apache/flink/flink-sql-connector-elasticsearch6{{site.scala_version_suffix}}/{{site.version}}/flink-sql-connector-elasticsearch6{{site.scala_version_suffix}}-{{site.version}}.jar) |
 | Apache Kafka      | 0.8                 | `flink-connector-kafka-0.8`  | Not available          |
-| Apache Kafka      | 0.9                 | `flink-connector-kafka-0.9`  | [Download](http://central.maven.org/maven2/org/apache/flink/flink-connector-kafka-0.9{{site.scala_version_suffix}}/{{site.version}}/flink-connector-kafka-0.9{{site.scala_version_suffix}}-{{site.version}}-sql-jar.jar) |
-| Apache Kafka      | 0.10                | `flink-connector-kafka-0.10` | [Download](http://central.maven.org/maven2/org/apache/flink/flink-connector-kafka-0.10{{site.scala_version_suffix}}/{{site.version}}/flink-connector-kafka-0.10{{site.scala_version_suffix}}-{{site.version}}-sql-jar.jar) |
-| Apache Kafka      | 0.11                | `flink-connector-kafka-0.11` | [Download](http://central.maven.org/maven2/org/apache/flink/flink-connector-kafka-0.11{{site.scala_version_suffix}}/{{site.version}}/flink-connector-kafka-0.11{{site.scala_version_suffix}}-{{site.version}}-sql-jar.jar) |
-| Apache Kafka      | 0.11+ (`universal`) | `flink-connector-kafka`      | [Download](http://central.maven.org/maven2/org/apache/flink/flink-connector-kafka{{site.scala_version_suffix}}/{{site.version}}/flink-connector-kafka{{site.scala_version_suffix}}-{{site.version}}-sql-jar.jar) |
+| Apache Kafka      | 0.9                 | `flink-connector-kafka-0.9`  | [Download](http://central.maven.org/maven2/org/apache/flink/flink-sql-connector-kafka-0.9{{site.scala_version_suffix}}/{{site.version}}/flink-sql-connector-kafka-0.9{{site.scala_version_suffix}}-{{site.version}}.jar) |
+| Apache Kafka      | 0.10                | `flink-connector-kafka-0.10` | [Download](http://central.maven.org/maven2/org/apache/flink/flink-sql-connector-kafka-0.10{{site.scala_version_suffix}}/{{site.version}}/flink-sql-connector-kafka-0.10{{site.scala_version_suffix}}-{{site.version}}.jar) |
+| Apache Kafka      | 0.11                | `flink-connector-kafka-0.11` | [Download](http://central.maven.org/maven2/org/apache/flink/flink-sql-connector-kafka-0.11{{site.scala_version_suffix}}/{{site.version}}/flink-sql-connector-kafka-0.11{{site.scala_version_suffix}}-{{site.version}}.jar) |
+| Apache Kafka      | 0.11+ (`universal`) | `flink-connector-kafka`      | [Download](http://central.maven.org/maven2/org/apache/flink/flink-sql-connector-kafka{{site.scala_version_suffix}}/{{site.version}}/flink-sql-connector-kafka{{site.scala_version_suffix}}-{{site.version}}.jar) |
 
 ### Formats
 
-| Name              | Maven dependency             | SQL Client JAR         |
-| :---------------- | :--------------------------- | :--------------------- |
-| CSV               | Built-in                     | Built-in               |
-| JSON              | `flink-json`                 | [Download](http://central.maven.org/maven2/org/apache/flink/flink-json/{{site.version}}/flink-json-{{site.version}}-sql-jar.jar) |
-| Apache Avro       | `flink-avro`                 | [Download](http://central.maven.org/maven2/org/apache/flink/flink-avro/{{site.version}}/flink-avro-{{site.version}}-sql-jar.jar) |
+| Name                       | Maven dependency             | SQL Client JAR         |
+| :------------------------- | :--------------------------- | :--------------------- |
+| Old CSV (for files)        | Built-in                     | Built-in               |
+| CSV (for Kafka)            | `flink-csv`                  | [Download](http://central.maven.org/maven2/org/apache/flink/flink-csv/{{site.version}}/flink-csv-{{site.version}}-sql-jar.jar) |
+| JSON                       | `flink-json`                 | [Download](http://central.maven.org/maven2/org/apache/flink/flink-json/{{site.version}}/flink-json-{{site.version}}-sql-jar.jar) |
+| Apache Avro                | `flink-avro`                 | [Download](http://central.maven.org/maven2/org/apache/flink/flink-avro/{{site.version}}/flink-avro-{{site.version}}-sql-jar.jar) |
 
 {% else %}
 
-This table is only available for stable releases.
+These tables are only available for stable releases.
 
 {% endif %}
 
@@ -97,6 +98,17 @@ tableEnvironment
   .withSchema(...)
   .inAppendMode()
   .registerTableSource("MyTable")
+{% endhighlight %}
+</div>
+
+<div data-lang="python" markdown="1">
+{% highlight python %}
+table_environment \
+    .connect(...) \
+    .with_format(...) \
+    .with_schema(...) \
+    .in_append_mode() \
+    .register_table_source("MyTable")
 {% endhighlight %}
 </div>
 
@@ -145,7 +157,7 @@ tableEnvironment
         "      {\"name\": \"user\", \"type\": \"long\"}," +
         "      {\"name\": \"message\", \"type\": [\"string\", \"null\"]}" +
         "    ]" +
-        "}" +
+        "}"
       )
   )
 
@@ -154,7 +166,7 @@ tableEnvironment
     new Schema()
       .field("rowtime", Types.SQL_TIMESTAMP)
         .rowtime(new Rowtime()
-          .timestampsFromField("ts")
+          .timestampsFromField("timestamp")
           .watermarksPeriodicBounded(60000)
         )
       .field("user", Types.LONG)
@@ -166,6 +178,50 @@ tableEnvironment
 
   // register as source, sink, or both and under a name
   .registerTableSource("MyUserTable");
+{% endhighlight %}
+</div>
+
+<div data-lang="python" markdown="1">
+{% highlight python %}
+table_environment \
+    .connect(  # declare the external system to connect to
+        Kafka()
+        .version("0.10")
+        .topic("test-input")
+        .start_from_earliest()
+        .property("zookeeper.connect", "localhost:2181")
+        .property("bootstrap.servers", "localhost:9092")
+    ) \
+    .with_format(  # declare a format for this system
+        Avro()
+        .avro_schema(
+            "{"
+            "  \"namespace\": \"org.myorganization\","
+            "  \"type\": \"record\","
+            "  \"name\": \"UserMessage\","
+            "    \"fields\": ["
+            "      {\"name\": \"timestamp\", \"type\": \"string\"},"
+            "      {\"name\": \"user\", \"type\": \"long\"},"
+            "      {\"name\": \"message\", \"type\": [\"string\", \"null\"]}"
+            "    ]"
+            "}"
+        )
+    ) \
+    .with_schema(  # declare the schema of the table
+        Schema()
+        .field("rowtime", DataTypes.TIMESTAMP())
+        .rowtime(
+            Rowtime()
+            .timestamps_from_field("timestamp")
+            .watermarks_periodic_bounded(60000)
+        )
+        .field("user", DataTypes.BIGINT())
+        .field("message", DataTypes.STRING())
+    ) \
+    .in_append_mode() \
+    .register_table_source("MyUserTable")  
+    # specify the update-mode for streaming tables and
+    # register as source, sink, or both and under a name
 {% endhighlight %}
 </div>
 
@@ -247,6 +303,17 @@ The following example shows a simple schema without time attributes and one-to-o
 {% endhighlight %}
 </div>
 
+<div data-lang="python" markdown="1">
+{% highlight python %}
+.with_schema(
+    Schema()
+    .field("MyField1", DataTypes.INT())  # required: specify the fields of the table (in this order)
+    .field("MyField2", DataTypes.STRING())
+    .field("MyField3", DataTypes.BOOLEAN())
+)
+{% endhighlight %}
+</div>
+
 <div data-lang="YAML" markdown="1">
 {% highlight yaml %}
 schema:
@@ -273,6 +340,20 @@ For *each field*, the following properties can be declared in addition to the co
       .rowtime(...)    // optional: declares this field as a event-time attribute
     .field("MyField3", Types.BOOLEAN)
       .from("mf3")     // optional: original field in the input that is referenced/aliased by this field
+)
+{% endhighlight %}
+</div>
+
+<div data-lang="python" markdown="1">
+{% highlight python %}
+.with_schema(
+    Schema()
+    .field("MyField1", DataTypes.TIMESTAMP())
+    .proctime()  # optional: declares this field as a processing-time attribute
+    .field("MyField2", DataTypes.TIMESTAMP())
+    .rowtime(...)  # optional: declares this field as a event-time attribute
+    .field("MyField3", DataTypes.BOOLEAN())
+    .from_origin_field("mf3")  # optional: original field in the input that is referenced/aliased by this field
 )
 {% endhighlight %}
 </div>
@@ -312,7 +393,7 @@ The following timestamp extractors are supported:
     .timestampsFromField("ts_field")    // required: original field name in the input
 )
 
-// Converts the assigned timestamps from a DataStream API record into the rowtime attribute 
+// Converts the assigned timestamps from a DataStream API record into the rowtime attribute
 // and thus preserves the assigned timestamps from the source.
 // This requires a source that assigns timestamps (e.g., Kafka 0.10+).
 .rowtime(
@@ -329,6 +410,32 @@ The following timestamp extractors are supported:
 {% endhighlight %}
 </div>
 
+<div data-lang="python" markdown="1">
+{% highlight python %}
+# Converts an existing BIGINT or TIMESTAMP field in the input into the rowtime attribute.
+.rowtime(
+    Rowtime()
+    .timestamps_from_field("ts_field")  # required: original field name in the input
+)
+
+# Converts the assigned timestamps into the rowtime attribute
+# and thus preserves the assigned timestamps from the source.
+# This requires a source that assigns timestamps (e.g., Kafka 0.10+).
+.rowtime(
+    Rowtime()
+    .timestamps_from_source()
+)
+
+# Sets a custom timestamp extractor to be used for the rowtime attribute.
+# The extractor must extend `org.apache.flink.table.sources.tsextractors.TimestampExtractor`.
+# Due to python can not accept java object, so it requires a full-qualified class name of the extractor.
+.rowtime(
+    Rowtime()
+    .timestamps_from_extractor(...)
+)
+{% endhighlight %}
+</div>
+
 <div data-lang="YAML" markdown="1">
 {% highlight yaml %}
 # Converts an existing BIGINT or TIMESTAMP field in the input into the rowtime attribute.
@@ -337,7 +444,7 @@ rowtime:
     type: from-field
     from: "ts_field"                 # required: original field name in the input
 
-# Converts the assigned timestamps from a DataStream API record into the rowtime attribute 
+# Converts the assigned timestamps from a DataStream API record into the rowtime attribute
 # and thus preserves the assigned timestamps from the source.
 rowtime:
   timestamps:
@@ -351,7 +458,7 @@ The following watermark strategies are supported:
 <div class="codetabs" markdown="1">
 <div data-lang="Java/Scala" markdown="1">
 {% highlight java %}
-// Sets a watermark strategy for ascending rowtime attributes. Emits a watermark of the maximum 
+// Sets a watermark strategy for ascending rowtime attributes. Emits a watermark of the maximum
 // observed timestamp so far minus 1. Rows that have a timestamp equal to the max timestamp
 // are not late.
 .rowtime(
@@ -375,9 +482,35 @@ The following watermark strategies are supported:
 {% endhighlight %}
 </div>
 
+<div data-lang="python" markdown="1">
+{% highlight python %}
+# Sets a watermark strategy for ascending rowtime attributes. Emits a watermark of the maximum
+# observed timestamp so far minus 1. Rows that have a timestamp equal to the max timestamp
+# are not late.
+.rowtime(
+    Rowtime()
+    .watermarks_periodic_ascending()
+)
+
+# Sets a built-in watermark strategy for rowtime attributes which are out-of-order by a bounded time interval.
+# Emits watermarks which are the maximum observed timestamp minus the specified delay.
+.rowtime(
+    Rowtime()
+    .watermarks_periodic_bounded(2000)  # delay in milliseconds
+)
+
+# Sets a built-in watermark strategy which indicates the watermarks should be preserved from the
+# underlying DataStream API and thus preserves the assigned watermarks from the source.
+.rowtime(
+    Rowtime()
+    .watermarks_from_source()
+)
+{% endhighlight %}
+</div>
+
 <div data-lang="YAML" markdown="1">
 {% highlight yaml %}
-# Sets a watermark strategy for ascending rowtime attributes. Emits a watermark of the maximum 
+# Sets a watermark strategy for ascending rowtime attributes. Emits a watermark of the maximum
 # observed timestamp so far minus 1. Rows that have a timestamp equal to the max timestamp
 # are not late.
 rowtime:
@@ -456,6 +589,13 @@ For streaming queries, it is required to declare how to perform the [conversion 
 {% endhighlight %}
 </div>
 
+<div data-lang="python" markdown="1">
+{% highlight python %}
+.connect(...) \
+    .in_append_mode()  # otherwise: in_upsert_mode() or in_retract_mode()
+{% endhighlight %}
+</div>
+
 <div data-lang="YAML" markdown="1">
 {% highlight yaml %}
 tables:
@@ -496,6 +636,15 @@ The file system connector allows for reading and writing from a local or distrib
 {% endhighlight %}
 </div>
 
+<div data-lang="python" markdown="1">
+{% highlight python %}
+.connect(
+    FileSystem()
+    .path("file:///path/to/whatever")  # required: path to a file or directory
+)
+{% endhighlight %}
+</div>
+
 <div data-lang="YAML" markdown="1">
 {% highlight yaml %}
 connector:
@@ -507,7 +656,7 @@ connector:
 
 The file system connector itself is included in Flink and does not require an additional dependency. A corresponding format needs to be specified for reading and writing rows from and to a file system.
 
-<span class="label label-danger">Attention</span> Make sure to include [Flink File System specific dependencies]({{ site.baseurl }}/ops/filesystems.html).
+<span class="label label-danger">Attention</span> Make sure to include [Flink File System specific dependencies]({{ site.baseurl }}/internals/filesystems.html).
 
 <span class="label label-danger">Attention</span> File system sources and sinks for streaming are only experimental. In the future, we will support actual streaming use cases, i.e., directory monitoring and bucket output.
 
@@ -543,6 +692,32 @@ The Kafka connector allows for reading and writing from and to an Apache Kafka t
     .sinkPartitionerFixed()         // each Flink partition ends up in at-most one Kafka partition (default)
     .sinkPartitionerRoundRobin()    // a Flink partition is distributed to Kafka partitions round-robin
     .sinkPartitionerCustom(MyCustom.class)    // use a custom FlinkKafkaPartitioner subclass
+)
+{% endhighlight %}
+</div>
+
+<div data-lang="python" markdown="1">
+{% highlight python %}
+.connect(
+    Kafka()
+    .version("0.11")  # required: valid connector versions are
+                      # "0.8", "0.9", "0.10", "0.11", and "universal"
+    .topic("...")     # required: topic name from which the table is read
+    
+    # optional: connector specific properties
+    .property("zookeeper.connect", "localhost:2181")
+    .property("bootstrap.servers", "localhost:9092")
+    .property("group.id", "testGroup")
+
+    # optional: select a startup mode for Kafka offsets
+    .start_from_earliest()
+    .start_from_latest()
+    .start_from_specific_offsets(...)
+
+    # optional: output partitioning from Flink's partitions into Kafka's partitions
+    .sink_partitioner_fixed()        # each Flink partition ends up in at-most one Kafka partition (default)
+    .sink_partitioner_round_robin()  # a Flink partition is distributed to Kafka partitions round-robin
+    .sink_partitioner_custom("full.qualified.custom.class.name")  # use a custom FlinkKafkaPartitioner subclass
 )
 {% endhighlight %}
 </div>
@@ -647,6 +822,44 @@ The connector can be defined as follows:
 {% endhighlight %}
 </div>
 
+<div data-lang="python" markdown="1">
+{% highlight python %}
+.connect(
+    Elasticsearch()
+    .version("6")                      # required: valid connector versions are "6"
+    .host("localhost", 9200, "http")   # required: one or more Elasticsearch hosts to connect to
+    .index("MyUsers")                  # required: Elasticsearch index
+    .document_type("user")             # required: Elasticsearch document type
+
+    .key_delimiter("$")       # optional: delimiter for composite keys ("_" by default)
+                              #   e.g., "$" would result in IDs "KEY1$KEY2$KEY3"
+    .key_null_literal("n/a")  # optional: representation for null fields in keys ("null" by default)
+
+    # optional: failure handling strategy in case a request to Elasticsearch fails (fail by default)
+    .failure_handler_fail()             # optional: throws an exception if a request fails and causes a job failure
+    .failure_handler_ignore()           #   or ignores failures and drops the request
+    .failure_handler_retry_rejected()   #   or re-adds requests that have failed due to queue capacity saturation
+    .failure_handler_custom(...)        #   or custom failure handling with a ActionRequestFailureHandler subclass
+
+    # optional: configure how to buffer elements before sending them in bulk to the cluster for efficiency
+    .disable_flush_on_checkpoint()      # optional: disables flushing on checkpoint (see notes below!)
+    .bulk_flush_max_actions(42)         # optional: maximum number of actions to buffer for each bulk request
+    .bulk_flush_max_size("42 mb")       # optional: maximum size of buffered actions in bytes per bulk request
+                                        #   (only MB granularity is supported)
+    .bulk_flush_interval(60000)         # optional: bulk flush interval (in milliseconds)
+
+    .bulk_flush_backoff_constant()      # optional: use a constant backoff type
+    .bulk_flush_backoff_exponential()   #   or use an exponential backoff type
+    .bulk_flush_backoff_max_retries(3)  # optional: maximum number of retries
+    .bulk_flush_backoff_delay(30000)    # optional: delay between each backoff attempt (in milliseconds)
+
+    # optional: connection properties to be used during REST communication to Elasticsearch
+    .connection_max_retry_timeout(3)    # optional: maximum timeout (in milliseconds) between retries
+    .connection_path_prefix("/v1")      # optional: prefix string to be added to every REST communication
+)
+{% endhighlight %}
+</div>
+
 <div data-lang="YAML" markdown="1">
 {% highlight yaml %}
 connector:
@@ -695,7 +908,7 @@ connector:
 
 **Key extraction:** Flink automatically extracts valid keys from a query. For example, a query `SELECT a, b, c FROM t GROUP BY a, b` defines a composite key of the fields `a` and `b`. The Elasticsearch connector generates a document ID string for every row by concatenating all key fields in the order defined in the query using a key delimiter. A custom representation of null literals for key fields can be defined.
 
-<span class="label label-danger">Attention</span> A JSON format defines how to encode documents for the external system, therefore, it must be added as a [dependency](connect.html#formats). 
+<span class="label label-danger">Attention</span> A JSON format defines how to encode documents for the external system, therefore, it must be added as a [dependency](connect.html#formats).
 
 {% top %}
 
@@ -708,21 +921,75 @@ A format tag indicates the format type for matching with a connector.
 
 ### CSV Format
 
-The CSV format allows to read and write comma-separated rows.
+<span class="label label-info">Format: Serialization Schema</span>
+<span class="label label-info">Format: Deserialization Schema</span>
+
+The CSV format aims to comply with [RFC-4180](https://tools.ietf.org/html/rfc4180) ("Common Format and
+MIME Type for Comma-Separated Values (CSV) Files") proposed by the Internet Engineering Task Force (IETF).
+
+The format allows to read and write CSV data that corresponds to a given format schema. The format schema can be
+defined either as a Flink type or derived from the desired table schema.
+
+If the format schema is equal to the table schema, the schema can also be automatically derived. This allows for
+defining schema information only once. The names, types, and fields' order of the format are determined by the
+table's schema. Time attributes are ignored if their origin is not a field. A `from` definition in the table
+schema is interpreted as a field renaming in the format.
+
+The CSV format can be used as follows:
 
 <div class="codetabs" markdown="1">
 <div data-lang="Java/Scala" markdown="1">
 {% highlight java %}
 .withFormat(
   new Csv()
-    .field("field1", Types.STRING)    // required: ordered format fields
-    .field("field2", Types.TIMESTAMP)
-    .fieldDelimiter(",")              // optional: string delimiter "," by default 
-    .lineDelimiter("\n")              // optional: string delimiter "\n" by default 
-    .quoteCharacter('"')              // optional: single character for string values, empty by default
-    .commentPrefix('#')               // optional: string to indicate comments, empty by default
-    .ignoreFirstLine()                // optional: ignore the first line, by default it is not skipped
-    .ignoreParseErrors()              // optional: skip records with parse error instead of failing by default
+
+    // required: define the schema either by using type information
+    .schema(Type.ROW(...))
+
+    // or use the table's schema
+    .deriveSchema()
+
+    .fieldDelimiter(';')         // optional: field delimiter character (',' by default)
+    .lineDelimiter("\r\n")       // optional: line delimiter ("\n" by default;
+                                 //   otherwise "\r" or "\r\n" are allowed)
+    .quoteCharacter('\'')        // optional: quote character for enclosing field values ('"' by default)
+    .allowComments()             // optional: ignores comment lines that start with '#' (disabled by default);
+                                 //   if enabled, make sure to also ignore parse errors to allow empty rows
+    .ignoreParseErrors()         // optional: skip fields and rows with parse errors instead of failing;
+                                 //   fields are set to null in case of errors
+    .arrayElementDelimiter("|")  // optional: the array element delimiter string for separating
+                                 //   array and row element values (";" by default)
+    .escapeCharacter('\\')       // optional: escape character for escaping values (disabled by default)
+    .nullLiteral("n/a")          // optional: null literal string that is interpreted as a
+                                 //   null value (disabled by default)
+)
+{% endhighlight %}
+</div>
+
+<div data-lang="python" markdown="1">
+{% highlight python %}
+.with_format(
+    Csv()
+
+    # required: define the schema either by using type information
+    .schema(DataTypes.ROW(...))
+
+    # or use the table's schema
+    .derive_schema()
+
+    .field_delimiter(';')          # optional: field delimiter character (',' by default)
+    .line_delimiter("\r\n")        # optional: line delimiter ("\n" by default;
+                                   #   otherwise "\r" or "\r\n" are allowed)
+    .quote_character('\'')         # optional: quote character for enclosing field values ('"' by default)
+    .allow_comments()              # optional: ignores comment lines that start with '#' (disabled by default);
+                                   #   if enabled, make sure to also ignore parse errors to allow empty rows
+    .ignore_parse_errors()         # optional: skip fields and rows with parse errors instead of failing;
+                                   #   fields are set to null in case of errors
+    .array_element_delimiter("|")  # optional: the array element delimiter string for separating
+                                   #   array and row element values (";" by default)
+    .escape_character('\\')        # optional: escape character for escaping values (disabled by default)
+    .null_literal("n/a")           # optional: null literal string that is interpreted as a
+                                   #   null value (disabled by default)
 )
 {% endhighlight %}
 </div>
@@ -731,24 +998,76 @@ The CSV format allows to read and write comma-separated rows.
 {% highlight yaml %}
 format:
   type: csv
-  fields:                    # required: ordered format fields
-    - name: field1
-      type: VARCHAR
-    - name: field2
-      type: TIMESTAMP
-  field-delimiter: ","       # optional: string delimiter "," by default 
-  line-delimiter: "\n"       # optional: string delimiter "\n" by default 
-  quote-character: '"'       # optional: single character for string values, empty by default
-  comment-prefix: '#'        # optional: string to indicate comments, empty by default
-  ignore-first-line: false   # optional: boolean flag to ignore the first line, by default it is not skipped
-  ignore-parse-errors: true  # optional: skip records with parse error instead of failing by default
+
+  # required: define the schema either by using type information
+  schema: "ROW(lon FLOAT, rideTime TIMESTAMP)"
+
+  # or use the table's schema
+  derive-schema: true
+
+  field-delimiter: ";"         # optional: field delimiter character (',' by default)
+  line-delimiter: "\r\n"       # optional: line delimiter ("\n" by default; otherwise "\r" or "\r\n" are allowed)
+  quote-character: "'"         # optional: quote character for enclosing field values ('"' by default)
+  allow-comments: true         # optional: ignores comment lines that start with "#" (disabled by default);
+                               #   if enabled, make sure to also ignore parse errors to allow empty rows
+  ignore-parse-errors: true    # optional: skip fields and rows with parse errors instead of failing;
+                               #   fields are set to null in case of errors
+  array-element-delimiter: "|" # optional: the array element delimiter string for separating
+                               #   array and row element values (";" by default)
+  escape-character: "\\"       # optional: escape character for escaping values (disabled by default)
+  null-literal: "n/a"          # optional: null literal string that is interpreted as a
+                               #   null value (disabled by default)
 {% endhighlight %}
 </div>
 </div>
 
-The CSV format is included in Flink and does not require additional dependencies.
+The following table lists supported types that can be read and written:
 
-<span class="label label-danger">Attention</span> The CSV format for writing rows is limited at the moment. Only a custom field delimiter is supported as optional parameter.
+| Supported Flink SQL Types |
+| :------------------------ |
+| `ROW`                    |
+| `VARCHAR`                |
+| `ARRAY[_]`               |
+| `INT`                    |
+| `BIGINT`                 |
+| `FLOAT`                  |
+| `DOUBLE`                 |
+| `BOOLEAN`                |
+| `DATE`                   |
+| `TIME`                   |
+| `TIMESTAMP`              |
+| `DECIMAL`                |
+| `NULL` (unsupported yet) |
+
+**Numeric types:** Value should be a number but the literal `"null"` can also be understood. An empty string is
+considered `null`. Values are also trimmed (leading/trailing white space). Numbers are parsed using
+Java's `valueOf` semantics. Other non-numeric strings may cause a parsing exception.
+
+**String and time types:** Value is not trimmed. The literal `"null"` can also be understood. Time types
+must be formatted according to the Java SQL time format with millisecond precision. For example:
+`2018-01-01` for date, `20:43:59` for time, and `2018-01-01 20:43:59.999` for timestamp.
+
+**Boolean type:** Value is expected to be a boolean (`"true"`, `"false"`) string or `"null"`. Empty strings are
+interpreted as `false`. Values are trimmed (leading/trailing white space). Other values result in an exception.
+
+**Nested types:** Array and row types are supported for one level of nesting using the array element delimiter.
+
+**Primitive byte arrays:** Primitive byte arrays are handled in Base64-encoded representation.
+
+**Line endings:** Line endings need to be considered even for row-based connectors (such as Kafka)
+to be ignored for unquoted string fields at the end of a row.
+
+**Escaping and quoting:** The following table shows examples of how escaping and quoting affect the parsing
+of a string using `*` for escaping and `'` for quoting:
+
+| CSV Field         | Parsed String        |
+| :---------------- | :------------------- |
+| `123*'4**`        | `123'4*`             |
+| `'123''4**'`      | `123'4*`             |
+| `'a;b*'c'`        | `a;b'c`              |
+| `'a;b''c'`        | `a;b'c`              |
+
+Make sure to add the CSV format as a dependency.
 
 ### JSON Format
 
@@ -757,7 +1076,9 @@ The CSV format is included in Flink and does not require additional dependencies
 
 The JSON format allows to read and write JSON data that corresponds to a given format schema. The format schema can be defined either as a Flink type, as a JSON schema, or derived from the desired table schema. A Flink type enables a more SQL-like definition and mapping to the corresponding SQL data types. The JSON schema allows for more complex and nested structures.
 
-If the format schema is equal to the table schema, the schema can also be automatically derived. This allows for defining schema information only once. The names, types, and field order of the format are determined by the table's schema. Time attributes are ignored if their origin is not a field. A `from` definition in the table schema is interpreted as a field renaming in the format.
+If the format schema is equal to the table schema, the schema can also be automatically derived. This allows for defining schema information only once. The names, types, and fields' order of the format are determined by the table's schema. Time attributes are ignored if their origin is not a field. A `from` definition in the table schema is interpreted as a field renaming in the format.
+
+The JSON format can be used as follows:
 
 <div class="codetabs" markdown="1">
 <div data-lang="Java/Scala" markdown="1">
@@ -787,6 +1108,37 @@ If the format schema is equal to the table schema, the schema can also be automa
 
     // or use the table's schema
     .deriveSchema()
+)
+{% endhighlight %}
+</div>
+
+<div data-lang="python" markdown="1">
+{% highlight python %}
+.with_format(
+    Json()
+    .fail_on_missing_field(True)   # optional: flag whether to fail if a field is missing or not, False by default
+
+    # required: define the schema either by using type information which parses numbers to corresponding types
+    .schema(DataTypes.ROW(...))
+
+    # or by using a JSON schema which parses to DECIMAL and TIMESTAMP
+    .json_schema(
+        "{"
+        "  type: 'object',"
+        "  properties: {"
+        "    lon: {"
+        "      type: 'number'"
+        "    },"
+        "    rideTime: {"
+        "      type: 'string',"
+        "      format: 'date-time'"
+        "    }"
+        "  }"
+        "}"
+    )
+
+    # or use the table's schema
+    .derive_schema()
 )
 {% endhighlight %}
 </div>
@@ -836,7 +1188,6 @@ The following table shows the mapping of JSON schema types to Flink SQL types:
 | `string` with `format: time`      | `TIME`                  |
 | `string` with `encoding: base64`  | `ARRAY[TINYINT]`        |
 | `null`                            | `NULL` (unsupported yet)|
-
 
 Currently, Flink supports only a subset of the [JSON schema specification](http://json-schema.org/) `draft-07`. Union types (as well as `allOf`, `anyOf`, `not`) are not supported yet. `oneOf` and arrays of types are only supported for specifying nullability.
 
@@ -891,13 +1242,14 @@ Simple references that link to a common definition in the document are supported
 
 Make sure to add the JSON format as a dependency.
 
-
 ### Apache Avro Format
 
 <span class="label label-info">Format: Serialization Schema</span>
 <span class="label label-info">Format: Deserialization Schema</span>
 
 The [Apache Avro](https://avro.apache.org/) format allows to read and write Avro data that corresponds to a given format schema. The format schema can be defined either as a fully qualified class name of an Avro specific record or as an Avro schema string. If a class name is used, the class must be available in the classpath during runtime.
+
+The Avro format can be used as follows:
 
 <div class="codetabs" markdown="1">
 <div data-lang="Java/Scala" markdown="1">
@@ -918,6 +1270,29 @@ The [Apache Avro](https://avro.apache.org/) format allows to read and write Avro
       "    {\"name\": \"b\", \"type\": \"string\"}" +
       "  ]" +
       "}"
+    )
+)
+{% endhighlight %}
+</div>
+
+<div data-lang="python" markdown="1">
+{% highlight python %}
+.with_format(
+    Avro()
+
+    # required: define the schema either by using an Avro specific record class
+    .record_class("full.qualified.user.class.name")
+
+    # or by using an Avro schema
+    .avro_schema(
+        "{"
+        "  \"type\": \"record\","
+        "  \"name\": \"test\","
+        "  \"fields\" : ["
+        "    {\"name\": \"a\", \"type\": \"long\"},"
+        "    {\"name\": \"b\", \"type\": \"string\"}"
+        "  ]"
+        "}"
     )
 )
 {% endhighlight %}
@@ -975,6 +1350,72 @@ Avro uses [Joda-Time](http://www.joda.org/joda-time/) for representing logical d
 
 Make sure to add the Apache Avro dependency.
 
+### Old CSV Format
+
+<span class="label label-danger">Attention</span> For prototyping purposes only!
+
+The old CSV format allows to read and write comma-separated rows using the filesystem connector.
+
+This format describes Flink's non-standard CSV table source/sink. In the future, the format will be
+replaced by a proper RFC-compliant version. Use the RFC-compliant CSV format when writing to Kafka.
+Use the old one for stream/batch filesystem operations for now.
+
+<div class="codetabs" markdown="1">
+<div data-lang="Java/Scala" markdown="1">
+{% highlight java %}
+.withFormat(
+  new OldCsv()
+    .field("field1", Types.STRING)    // required: ordered format fields
+    .field("field2", Types.TIMESTAMP)
+    .fieldDelimiter(",")              // optional: string delimiter "," by default
+    .lineDelimiter("\n")              // optional: string delimiter "\n" by default
+    .quoteCharacter('"')              // optional: single character for string values, empty by default
+    .commentPrefix('#')               // optional: string to indicate comments, empty by default
+    .ignoreFirstLine()                // optional: ignore the first line, by default it is not skipped
+    .ignoreParseErrors()              // optional: skip records with parse error instead of failing by default
+)
+{% endhighlight %}
+</div>
+
+<div data-lang="python" markdown="1">
+{% highlight python %}
+.with_format(
+    OldCsv()
+    .field("field1", DataTypes.STRING())    # required: ordered format fields
+    .field("field2", DataTypes.TIMESTAMP())
+    .field_delimiter(",")                   # optional: string delimiter "," by default
+    .line_delimiter("\n")                   # optional: string delimiter "\n" by default
+    .quote_character('"')                   # optional: single character for string values, empty by default
+    .comment_prefix('#')                    # optional: string to indicate comments, empty by default
+    .ignore_first_line()                    # optional: ignore the first line, by default it is not skipped
+    .ignore_parse_errors()                  # optional: skip records with parse error instead of failing by default
+)
+{% endhighlight %}
+</div>
+
+<div data-lang="YAML" markdown="1">
+{% highlight yaml %}
+format:
+  type: csv
+  fields:                    # required: ordered format fields
+    - name: field1
+      type: VARCHAR
+    - name: field2
+      type: TIMESTAMP
+  field-delimiter: ","       # optional: string delimiter "," by default
+  line-delimiter: "\n"       # optional: string delimiter "\n" by default
+  quote-character: '"'       # optional: single character for string values, empty by default
+  comment-prefix: '#'        # optional: string to indicate comments, empty by default
+  ignore-first-line: false   # optional: boolean flag to ignore the first line, by default it is not skipped
+  ignore-parse-errors: true  # optional: skip records with parse error instead of failing by default
+{% endhighlight %}
+</div>
+</div>
+
+The old CSV format is included in Flink and does not require additional dependencies.
+
+<span class="label label-danger">Attention</span> The old CSV format for writing rows is limited at the moment. Only a custom field delimiter is supported as optional parameter.
+
 {% top %}
 
 Further TableSources and TableSinks
@@ -992,7 +1433,7 @@ These are the additional `TableSink`s which are provided with Flink:
 | **Class name** | **Maven dependency** | **Batch?** | **Streaming?** | **Description**
 | `CsvTableSink` | `flink-table` | Y | Append | A simple sink for CSV files.
 | `JDBCAppendTableSink` | `flink-jdbc` | Y | Append | Writes a Table to a JDBC table.
-| `CassandraAppendTableSink` | `flink-connector-cassandra` | N | Append | Writes a Table to a Cassandra table. 
+| `CassandraAppendTableSink` | `flink-connector-cassandra` | N | Append | Writes a Table to a Cassandra table.
 
 ### OrcTableSource
 
@@ -1044,7 +1485,7 @@ val orcTableSource = OrcTableSource.builder()
 
 ### CsvTableSink
 
-The `CsvTableSink` emits a `Table` to one or more CSV files. 
+The `CsvTableSink` emits a `Table` to one or more CSV files.
 
 The sink only supports append-only streaming tables. It cannot be used to emit a `Table` that is continuously updated. See the [documentation on Table to Stream conversions](./streaming/dynamic_tables.html#table-to-stream-conversion) for details. When emitting a streaming table, rows are written at least once (if checkpointing is enabled) and the `CsvTableSink` does not split output files into bucket files but continuously writes to the same files.
 
@@ -1053,17 +1494,17 @@ The sink only supports append-only streaming tables. It cannot be used to emit a
 {% highlight java %}
 
 CsvTableSink sink = new CsvTableSink(
-    path,                  // output path 
+    path,                  // output path
     "|",                   // optional: delimit files by '|'
     1,                     // optional: write to a single file
     WriteMode.OVERWRITE);  // optional: override existing files
 
 tableEnv.registerTableSink(
   "csvOutputTable",
-  sink,
   // specify table schema
   new String[]{"f0", "f1"},
-  new TypeInformation[]{Types.STRING, Types.INT});
+  new TypeInformation[]{Types.STRING, Types.INT},
+  sink);
 
 Table table = ...
 table.insertInto("csvOutputTable");
@@ -1074,20 +1515,45 @@ table.insertInto("csvOutputTable");
 {% highlight scala %}
 
 val sink: CsvTableSink = new CsvTableSink(
-    path,                             // output path 
+    path,                             // output path
     fieldDelim = "|",                 // optional: delimit files by '|'
     numFiles = 1,                     // optional: write to a single file
     writeMode = WriteMode.OVERWRITE)  // optional: override existing files
 
 tableEnv.registerTableSink(
   "csvOutputTable",
-  sink,
   // specify table schema
   Array[String]("f0", "f1"),
-  Array[TypeInformation[_]](Types.STRING, Types.INT))
+  Array[TypeInformation[_]](Types.STRING, Types.INT),
+  sink)
 
 val table: Table = ???
 table.insertInto("csvOutputTable")
+{% endhighlight %}
+</div>
+
+<div data-lang="python" markdown="1">
+{% highlight python %}
+
+field_names = ["f0", "f1"]
+field_types = [DataTypes.STRING(), DataTypes.INT()]
+
+sink = CsvTableSink(
+    field_names,
+    field_types,
+    path,                 # output path
+    "|",                  # optional: delimit files by '|'
+    1,                    # optional: write to a single file
+    WriteMode.OVERWRITE  # optional: override existing files
+)
+
+table_env.register_table_sink(
+    "csvOutputTable",
+    sink
+)
+
+table = ...
+table.insert_into("csvOutputTable")
 {% endhighlight %}
 </div>
 </div>
@@ -1113,10 +1579,10 @@ JDBCAppendTableSink sink = JDBCAppendTableSink.builder()
 
 tableEnv.registerTableSink(
   "jdbcOutputTable",
-  sink,
   // specify table schema
   new String[]{"id"},
-  new TypeInformation[]{Types.INT});
+  new TypeInformation[]{Types.INT},
+  sink);
 
 Table table = ...
 table.insertInto("jdbcOutputTable");
@@ -1134,10 +1600,10 @@ val sink: JDBCAppendTableSink = JDBCAppendTableSink.builder()
 
 tableEnv.registerTableSink(
   "jdbcOutputTable",
-  sink,
   // specify table schema
   Array[String]("id"),
-  Array[TypeInformation[_]](Types.INT))
+  Array[TypeInformation[_]](Types.INT),
+  sink)
 
 val table: Table = ???
 table.insertInto("jdbcOutputTable")
@@ -1145,7 +1611,7 @@ table.insertInto("jdbcOutputTable")
 </div>
 </div>
 
-Similar to using <code>JDBCOutputFormat</code>, you have to explicitly specify the name of the JDBC driver, the JDBC URL, the query to be executed, and the field types of the JDBC table. 
+Similar to using <code>JDBCOutputFormat</code>, you have to explicitly specify the name of the JDBC driver, the JDBC URL, the query to be executed, and the field types of the JDBC table.
 
 {% top %}
 
@@ -1164,16 +1630,16 @@ To use the `CassandraAppendTableSink`, you have to add the Cassandra connector d
 ClusterBuilder builder = ... // configure Cassandra cluster connection
 
 CassandraAppendTableSink sink = new CassandraAppendTableSink(
-  builder, 
+  builder,
   // the query must match the schema of the table
-  INSERT INTO flink.myTable (id, name, value) VALUES (?, ?, ?));
+  "INSERT INTO flink.myTable (id, name, value) VALUES (?, ?, ?)");
 
 tableEnv.registerTableSink(
   "cassandraOutputTable",
-  sink,
   // specify table schema
   new String[]{"id", "name", "value"},
-  new TypeInformation[]{Types.INT, Types.STRING, Types.DOUBLE});
+  new TypeInformation[]{Types.INT, Types.STRING, Types.DOUBLE},
+  sink);
 
 Table table = ...
 table.insertInto(cassandraOutputTable);
@@ -1185,16 +1651,16 @@ table.insertInto(cassandraOutputTable);
 val builder: ClusterBuilder = ... // configure Cassandra cluster connection
 
 val sink: CassandraAppendTableSink = new CassandraAppendTableSink(
-  builder, 
+  builder,
   // the query must match the schema of the table
-  INSERT INTO flink.myTable (id, name, value) VALUES (?, ?, ?))
+  "INSERT INTO flink.myTable (id, name, value) VALUES (?, ?, ?)")
 
 tableEnv.registerTableSink(
   "cassandraOutputTable",
-  sink,
   // specify table schema
   Array[String]("id", "name", "value"),
-  Array[TypeInformation[_]](Types.INT, Types.STRING, Types.DOUBLE))
+  Array[TypeInformation[_]](Types.INT, Types.STRING, Types.DOUBLE),
+  sink)
 
 val table: Table = ???
 table.insertInto(cassandraOutputTable)

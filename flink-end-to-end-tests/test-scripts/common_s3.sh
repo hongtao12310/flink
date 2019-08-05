@@ -58,27 +58,15 @@ s3util="java -jar ${END_TO_END_DIR}/flink-e2e-test-utils/target/S3UtilProgram.ja
 #   IT_CASE_S3_ACCESS_KEY
 #   IT_CASE_S3_SECRET_KEY
 # Arguments:
-#   None
+#   $1 - s3 filesystem type (hadoop/presto)
 # Returns:
 #   None
 ###################################
 function s3_setup {
-  # make sure we delete the file at the end
-  function s3_cleanup {
-    rm $FLINK_DIR/lib/flink-s3-fs*.jar
-
-    # remove any leftover settings
-    sed -i -e 's/s3.access-key: .*//' "$FLINK_DIR/conf/flink-conf.yaml"
-    sed -i -e 's/s3.secret-key: .*//' "$FLINK_DIR/conf/flink-conf.yaml"
-  }
-  trap s3_cleanup EXIT
-
-  cp $FLINK_DIR/opt/flink-s3-fs-hadoop-*.jar $FLINK_DIR/lib/
-  echo "s3.access-key: $IT_CASE_S3_ACCESS_KEY" >> "$FLINK_DIR/conf/flink-conf.yaml"
-  echo "s3.secret-key: $IT_CASE_S3_SECRET_KEY" >> "$FLINK_DIR/conf/flink-conf.yaml"
+  add_optional_plugin "s3-fs-$1"
+  set_config_key "s3.access-key" "$IT_CASE_S3_ACCESS_KEY"
+  set_config_key "s3.secret-key" "$IT_CASE_S3_SECRET_KEY"
 }
-
-s3_setup
 
 ###################################
 # List s3 objects by full path prefix.
